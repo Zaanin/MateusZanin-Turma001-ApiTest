@@ -39,13 +39,15 @@ describe('API TOKEN PROTHEUS', () => {
       .withHeaders('Authorization', `Bearer $S{accessToken}`)
       .expectStatus(StatusCodes.OK);
   });
-  it('Consultar titulos em aberto PROTHEUS em que o cliente nao tem titulos em aberto', async () => {
+  it('Buscar PDF de boleto onde nao foi possivel gerar o boleto', async () => {
     await p
       .spec()
-      .get(`${baseUrl}/boletos/`)
-      .withQueryParams('cgc', '86224271453')
+      .get(`${baseUrl}/boletospdf/`)
+      .withQueryParams('filial', '01010')
+      .withQueryParams('notaFiscal', '000102170')
+      .withQueryParams('parcela', '00')
       .withHeaders('Authorization', `Bearer $S{accessToken}`)
-      .expectStatus(StatusCodes.NO_CONTENT);
+      .expectStatus(StatusCodes.BAD_REQUEST);
   });
   it('Consultar titulos em aberto PROTHEUS com CNPJ invalido', async () => {
     await p
